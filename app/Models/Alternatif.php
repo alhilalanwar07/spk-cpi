@@ -7,12 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Alternatif extends Model
 {
     protected $table = 'alternatifs';
-    protected $fillable = ['nama_alternatif', 'alamat', 'telepon', 'luas_lahan', 'user_id'];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ['nama_alternatif', 'kode_alternatif'];
 
     public function AlternatifKriteria()
     {
