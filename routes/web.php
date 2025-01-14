@@ -1,5 +1,9 @@
 <?php
 
+use App\Livewire\Admin\Kategori;
+use App\Livewire\Admin\Kriteria;
+use App\Livewire\Admin\Pengguna;
+use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\{Route, Auth};
 
 
@@ -12,8 +16,21 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // livewire
+// home
+Route::get('/home', Dashboard::class)->name('home');
+// kategori
+Route::get('/kategori', Kategori::class)->name('kategori');
+// pengguna
+Route::get('/pengguna', Pengguna::class)->name('pengguna');
+// kriteria
+Route::get('/kriteria', Kriteria::class)->name('kriteria');
+// alternatif
+Route::get('/alternatif', App\Livewire\Admin\Alternatif::class)->name('alternatif');
+// perhitungan
+Route::get('/perhitungan', App\Livewire\Admin\Perhitungan::class)->name('perhitungan');
+// hasil
+Route::get('/hasil', App\Livewire\Admin\Hasil::class)->name('hasil');
 // profil
 Route::get('/profil', App\Livewire\Profil::class)->name('profil');
 
