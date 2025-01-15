@@ -84,6 +84,7 @@
                     <th class="border-gray-200">Nama Kriteria</th>
                     <th class="border-gray-200">Bobot</th>
                     <th class="border-gray-200">Tren</th>
+                    <th class="border-gray-200">Sub Kriteria</th>
                     <th class="border-gray-200" style="width: 10%">Action</th>
                 </tr>
             </thead>
@@ -102,7 +103,18 @@
                         <span class="fw-normal">{{ $kriteria->bobot }}</span>
                     </td>
                     <td><span class="fw-normal">{{ $kriteria->tren }}</span></td>
+                    <td>
+                        <ul>
+                            @foreach ($kriteria->subkriteria as $subkriteria)
+                            <li>[{{ $subkriteria->bobot }}] {{ $subkriteria->nama_subkriteria }} </li>
+                            @endforeach
+                        </ul>
+                    </td>
                     <td class="text-end">
+                        <a href="#" class="btn btn-success text-white btn-sm btn-rounded" wire:click.prevent="addSubKriteria({{ $kriteria->id }})" data-bs-toggle="modal" data-bs-target="#modalAddSubKriteria">
+                            <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg> Sub Kriteria</a>
                         <a href="#" class="btn btn-info btn-sm btn-rounded" wire:click.prevent="edit({{ $kriteria->id }})" data-bs-toggle="modal" data-bs-target="#modaEdit">Edit</a>
                         <a href="#" wire:click.prevent="hapus({{ $kriteria->id }})" class="btn btn-danger btn-sm btn-rounded">Delete</a>
                     </td>
@@ -139,7 +151,7 @@
                                 <option value="">Pilih Tren</option>
                                 <option value="positif">Positif</option>
                                 <option value="negatif">Negatif</option>
-                            </select>   
+                            </select>
                             @error('tren') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -177,7 +189,7 @@
                                 <option value="">Pilih Tren</option>
                                 <option value="positif">Positif</option>
                                 <option value="negatif">Negatif</option>
-                            </select>   
+                            </select>
                             @error('tren') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -190,5 +202,49 @@
         </div>
     </div>
     <!-- End of Modal Content -->
+    <!-- modal add subkriteria -->
+    <div wire:ignore.self class="modal fade" id="modalAddSubKriteria" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="h6 modal-title">Tambah Sub Kriteria</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    @csrf
+                    <div class="modal-body">
+                        @foreach($subkriterias as $index => $subkriteria)
+                        <div class="subkriteria-item mb-3">
+                            <div class="form-group mb-3">
+                                <label class="form-label">Nama Sub Kriteria</label>
+                                <input type="text" class="form-control @error('subkriterias.'.$index.'.nama_subkriteria') is-invalid @enderror" wire:model="subkriterias.{{ $index }}.nama_subkriteria">
+                                @error('subkriterias.'.$index.'.nama_subkriteria') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Nilai</label>
+                                <input type="number" class="form-control @error('subkriterias.'.$index.'.nilai') is-invalid @enderror" wire:model="subkriterias.{{ $index }}.nilai">
+                                @error('subkriterias.'.$index.'.nilai') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm" wire:click.prevent="removeSubKriteria({{ $index }})">
+                                <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        @endforeach
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary btn-sm" wire:click.prevent="addSubKriteria({{ $kriteria_id ?? 0 }})">Add Sub Kriteria</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" wire:click="simpanSubKriteria()" @if($modal) data-bs-dismiss="modal" @endif>Simpan</button>
+                        <button type="button" class="btn btn-link text-gray-600 ms-auto" wire:click="resetInput()" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal Content -->
+
     @livewire('alert')
 </div>

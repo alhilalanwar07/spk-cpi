@@ -13,9 +13,11 @@ class Kriteria extends Component
     public $search = '';
     public $perpage = 10;
     public $selectedPerPage = 10;
-    public $nama_kriteria, $bobot, $tren, $kriteria_id;
+    public $nama_kriteria, $bobot, $tren, $kriteria_id, $nilai;
 
     public $modal = true;
+
+    public $subkriterias = [];
 
     public function updatedSearch()
     {
@@ -33,6 +35,13 @@ class Kriteria extends Component
         $this->resetPage();
     }
 
+    public function mount()
+    {
+        $this->subkriterias = [
+            ['nama_subkriteria' => '', 'nilai' => '']
+        ];
+    }
+
     public function render()
     {
         return view('livewire.admin.kriteria', [
@@ -46,6 +55,10 @@ class Kriteria extends Component
         $this->bobot = null;
         $this->tren = null;
         $this->kriteria_id = null;
+        $this->nilai = null;
+        $this->subkriterias = [
+            ['nama_subkriteria' => '', 'nilai' => '']
+        ];
 
         $this->modal = false;
     }
@@ -150,5 +163,43 @@ class Kriteria extends Component
             'timeout'   => 1000
         ]);
     }
-    
+
+    public function addSubKriteria($id)
+    {
+        $this->kriteria_id = $id;
+        $this->subkriterias[] = ['nama_subkriteria' => '', 'nilai' => ''];
+    }
+
+    public function removeSubKriteria($index)
+    {
+        unset($this->subkriterias[$index]);
+        $this->subkriterias = array_values($this->subkriterias);
+    }
+
+    public function simpanSubKriteria()
+    {
+        $this->validate([
+            'subkriterias.*.nama_subkriteria' => 'required|string',
+            'subkriterias.*.nilai' => 'required|numeric',
+        ]);
+
+        foreach ($this->subkriterias as $subkriteria) {
+            \App\Models\SubKriteria::create([
+                'nama_subkriteria' => $subkriteria['nama_subkriteria'],
+                'bobot' => $subkriteria['nilai'],
+                'kriteria_id' => $this->kriteria_id, // Assuming you have kriteria_id in your component
+            ]);
+        }
+
+        $this->dispatch('tambahAlert', [
+            'title'     => 'Simpan data berhasil',
+            'text'      => 'Data Sub Kriteria Berhasil Disimpan',
+            'type'      => 'success',
+            'timeout'   => 1000
+        ]);
+
+        $this->subkriterias = [
+            ['nama_subkriteria' => '', 'nilai' => '']
+        ];
+    }    
 }
