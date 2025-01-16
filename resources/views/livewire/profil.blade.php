@@ -25,9 +25,9 @@
             <div class="row">
                 <div class="col-12 mb-4">
                     <div class="card shadow border-0 text-center p-0">
-                        <div class="profile-cover rounded-top" data-background="{{ url('/') }}/assets/img/favicon/favicon-32x32.png" ></div>
+                        <div class="profile-cover rounded-top"></div>
                         <div class="card-body pb-5">
-                            <img src="{{ url('/') }}/no_image.jpg" class="avatar-xl rounded-circle mx-auto mt-n7 mb-4" alt="Neil Portrait">
+                            <img src="{{ url('/') }}/assets/img/brand/light.svg" class="avatar-xl rounded-circle mx-auto mt-n7 mb-4" alt="user">
                             <h4 class="h3">
                                 {{ Auth::check() ? Auth::user()->name : '' }}
                             </h4>

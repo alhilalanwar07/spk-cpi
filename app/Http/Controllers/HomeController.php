@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $kriteria = \App\Models\Kriteria::count();
+        $subkriteria = \App\Models\Subkriteria::count();
+        $alternatif = \App\Models\Alternatif::count();
+        $hasil = \App\Models\Hasil::count();
+        $user = \App\Models\User::count();
+        return view('home', compact('kriteria', 'subkriteria', 'alternatif', 'hasil', 'user'));
     }
 }

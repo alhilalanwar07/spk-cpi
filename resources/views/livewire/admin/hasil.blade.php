@@ -34,10 +34,11 @@
         </div>
     </div>
     <div class="card card-body border-0 shadow table-wrapper table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover table-centered table-nowrap mb-0 rounded">
             <thead>
                 <tr>
                     <th class="border-gray-200" style="width: 5%">#</th>
+                    <th class="border-gray-200">Tanggal</th>
                     <th class="border-gray-200">Alternatif</th>
                     <th class="border-gray-200">Nilai CPI</th>
                     <th class="border-gray-200">Rank</th>
@@ -50,6 +51,9 @@
                         <a href="#" class="fw-bold">
                             {{ ($loop->index) + (($hasils->currentPage() - 1) * $hasils->perPage()) + 1 }}
                         </a>
+                    </td>
+                    <td>
+                        <span class="fw-normal">{{ Carbon\Carbon::parse($hasil->created_at)->isoFormat('D MMMM Y') }}</span>
                     </td>
                     <td>
                         <span class="fw-normal">{{ $hasil->alternatif->nama_alternatif }}</span>

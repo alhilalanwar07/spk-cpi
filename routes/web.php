@@ -18,21 +18,22 @@ Auth::routes();
 
 // livewire
 // home
-Route::get('/home', Dashboard::class)->name('home');
-// kategori
-Route::get('/kategori', Kategori::class)->name('kategori');
-// pengguna
-Route::get('/pengguna', Pengguna::class)->name('pengguna');
-// kriteria
-Route::get('/kriteria', Kriteria::class)->name('kriteria');
-// alternatif
-Route::get('/alternatif', App\Livewire\Admin\Alternatif::class)->name('alternatif');
-// perhitungan
-Route::get('/perhitungan', App\Livewire\Admin\Perhitungan::class)->name('perhitungan');
-// hasil
-Route::get('/hasil', App\Livewire\Admin\Hasil::class)->name('hasil');
-// profil
-Route::get('/profil', App\Livewire\Profil::class)->name('profil');
-
-    //admin.manajemen-user
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', Dashboard::class)->name('home');
+    // kategori
+    Route::get('/kategori', Kategori::class)->name('kategori');
+    // pengguna
+    Route::get('/pengguna', Pengguna::class)->name('pengguna');
+    // kriteria
+    Route::get('/kriteria', Kriteria::class)->name('kriteria');
+    // alternatif
+    Route::get('/alternatif', App\Livewire\Admin\Alternatif::class)->name('alternatif');
+    // perhitungan
+    Route::get('/perhitungan', App\Livewire\Admin\Perhitungan::class)->name('perhitungan');
+    // hasil
+    Route::get('/hasil', App\Livewire\Admin\Hasil::class)->name('hasil');
+    // profil
+    Route::get('/profil', App\Livewire\Profil::class)->name('profil');
+    // admin.manajemen-user
     Route::get('/admin/manajemen-user', App\Livewire\Admin\ManajemenUser::class)->name('admin.manajemen-user');
+});

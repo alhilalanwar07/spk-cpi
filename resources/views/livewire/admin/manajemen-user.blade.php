@@ -19,16 +19,12 @@
             <p class="mb-0"></p>
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="#" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+            <button class="btn btn-sm btn-gray-800 d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalTambah" wire:click="resetInput()">
                 <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
-                New Plan
-            </a>
-            <div class="btn-group ms-2 ms-lg-3">
-                <button type="button" class="btn btn-sm btn-outline-gray-600">Share</button>
-                <button type="button" class="btn btn-sm btn-outline-gray-600">Export</button>
-            </div>
+                Tambah Data
+            </button>
         </div>
     </div>
     <div class="table-settings mb-4">
@@ -104,8 +100,8 @@
                     <td><span class="fw-normal">{{ $user->email }}</span></td>
                     <td><span class="fw-normal">{{ $user->role }}</span></td>
                     <td class="text-end">
-                        <a href="#" class="btn btn-info btn-sm btn-rounded">Edit</a>
-                        <a href="#" class="btn btn-danger btn-sm btn-rounded">Delete</a>
+                        <a href="#" class="btn btn-info btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target="#modalEdit" wire:click="edit({{ $user->id }})">Edit</a>
+                        <a href="#" class="btn btn-danger btn-sm btn-rounded" wire:click="delete({{ $user->id }})">Hapus</a>
                     </td>
                 </tr>
                 @endforeach
@@ -113,5 +109,96 @@
         </table>
         <div class="mt-2">{{ $users->links() }}</div>
     </div>
+    <!-- Modal Content -->
+    <div wire:ignore.self class="modal fade" id="modalTambah" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h2 class="h6 modal-title">Tambah User</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" wire:model="name">
+                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" wire:model="email">
+                            @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" wire:model="password">
+                            @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-control @error('role') is-invalid @enderror" wire:model="role">
+                                <option value="">Pilih Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                            @error('role') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" wire:click="simpan()" @if($modal) data-bs-dismiss="modal" @endif>Simpan</button>
+                        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Content -->
+    <div wire:ignore.self class="modal fade" id="modalEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h2 class="h6 modal-title">Edit User</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    @csrf
+                    <div class="modal-body ">
+                        <div class="form-group mb-3">
+                            <label class="form-label ">Nama</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" wire:model="name">
+                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" wire:model="email">
+                            @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" wire:model="password">
+                            <span class="text-muted">*Kosongkan jika tidak ingin mengganti password</span>
+                            @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-control @error('role') is-invalid @enderror" wire:model="role">
+                                <option value="">Pilih Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                            @error('role') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" wire:click="update()" @if($modal) data-bs-dismiss="modal" @endif>Update</button>
+                        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- alert -->
+    @livewire('alert')
 </div>

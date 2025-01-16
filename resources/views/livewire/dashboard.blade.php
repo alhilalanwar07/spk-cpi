@@ -2,10 +2,13 @@
     <div class="py-4">
         <div class="col-12 mb-1">
             <div class="card bg-yellow-100 border-0 shadow">
-                <div class="card-header d-sm-flex flex-row align-items-center flex-0">
+                <div class="card-header d-sm-flex d-flex flex-row justify-content-between flex-0">
                     <div class="d-block mb-3 mb-sm-0">
                         <div class="fw-normal badge bg-primary">Last Updated</div>
                     </div>
+                    <div wire:poll.1000ms="pollTime" class="d-flex align-items-center">
+                        <span class="fw-bold ms-2">{{ $currentTime }}</span>
+                    </div>  
                 </div>
             </div>
         </div>
@@ -39,7 +42,7 @@
                             <div class="d-sm-none">
                                 <h2 class="h5">Kriteria</h2>
                                 <h3 class="fw-extrabold mb-1">
-                                    
+                                    {{ $kriteria }}
                                 </h3>
                             </div>
                         </div>
@@ -47,7 +50,7 @@
                             <div class="d-none d-sm-block">
                                 <h2 class="h6 text-gray-400 mb-0">Kriteria</h2>
                                 <h3 class="fw-extrabold mb-2">
-                                    
+                                    {{ $kriteria }}
                                 </h3>
                             </div>
                         </div>
@@ -82,7 +85,7 @@
                             <div class="d-sm-none">
                                 <h2 class="fw-extrabold h5">Alternatif</h2>
                                 <h3 class="mb-1">
-
+                                    {{ $alternatif }}
                                 </h3>
                             </div>
                         </div>
@@ -90,7 +93,7 @@
                             <div class="d-none d-sm-block">
                                 <h2 class="h6 text-gray-400 mb-0">Alternatif</h2>
                                 <h3 class="fw-extrabold mb-2">
-                                    
+                                    {{ $alternatif }}
                                 </h3>
                             </div>
                         </div>
@@ -129,7 +132,7 @@
                             <div class="d-sm-none">
                                 <h2 class="fw-extrabold h5"> User</h2>
                                 <h3 class="mb-1">
-                                    
+                                    {{ $user }}
                                 </h3>
                             </div>
                         </div>
@@ -137,13 +140,20 @@
                             <div class="d-none d-sm-block">
                                 <h2 class="h6 text-gray-400 mb-0">User</h2>
                                 <h3 class="fw-extrabold mb-2">
-                                    
+                                    {{ $user }}
                                 </h3>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="card border-0 shadow mb-4" style="height: 50vh;">
+        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+            <h1 class="display-4 fw-bold text-center">Selamat Datang di Dashboard, {{ Auth::check() ? Auth::user()->name : '' }}!</h1>
+            <p class="lead text-center">Kami senang Anda bergabung dengan kami. Jelajahi fitur-fitur yang tersedia dan nikmati pengalaman terbaik.</p>
+            
         </div>
     </div>
 </div>
